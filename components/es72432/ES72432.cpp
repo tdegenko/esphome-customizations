@@ -20,16 +20,18 @@ void ES72432::setup() {
 }
 
 void ES72432::loop() {
-    uint8_t data[2];
-    this->read_register(REGISTER_ADDRESS, data, 1);
-    char out[20];
-    snprintf(out,20 ,"%x%x", data[0],data[1]);
-    ESP_LOGD(TAG, out);
 
 }
 
 void ES72432::dump_config(){
     ESP_LOGCONFIG(TAG, "ES72432");
+    uint8_t data;
+    char out[20];
+    for( uint8_t r = 0; r<= 0x0e; r++){
+        this->read_register(r, &data, 1);
+        snprintf(out,20 ,"r%x -> %x", r, data);
+        ESP_LOGD(TAG, out);
+    }
 }
 
 
