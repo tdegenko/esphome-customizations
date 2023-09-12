@@ -16,6 +16,8 @@ void ES72432::setup() {
     ESP_LOGCONFIG(TAG, "Empty component");
     ESP_LOGD(TAG, "Setting up bits/sample");
     this->write_register(REGISTER_ADDRESS, &register_value, 1);
+    const uint8_t gain_val = 0x43;
+    this->write_register(0x08, &gain_val, 1);
     ESP_LOGD(TAG, "Bits/sample Configured");
 }
 
