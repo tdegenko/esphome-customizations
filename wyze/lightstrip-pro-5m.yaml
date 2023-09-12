@@ -9,6 +9,11 @@ esphome:
   project:
     name: tdegenko.esphome-wyzelightstrippro
     version: "1.0"
+  libraries:
+
+external_components:
+  - source: github://tdegenko/esphome-customizations@dev
+    components: [ es72432 ]
 
 esp32:
   board: esp32dev
@@ -122,7 +127,7 @@ microphone:
   - platform: i2s_audio
     id: internal_mic
     pdm: false
-    bits_per_sample: 32bit
+    bits_per_sample: 16bit
     adc_type: external
     i2s_din_pin: GPIO36
     channel: right
@@ -166,3 +171,6 @@ voice_assistant:
 switch:
   - platform: restart
     name: ${friendly_name} Restart
+
+es72432:
+  id: es72432_lsp
