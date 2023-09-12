@@ -52,6 +52,7 @@ binary_sensor:
       mode:
         input: true
         pullup: true
+      inverted: true
     name: "${friendly_name} side button"
     on_press:
       then:
@@ -65,6 +66,7 @@ binary_sensor:
       mode:
         input: true
         pullup: true
+      inverted: true
     name: "${friendly_name} top button"
     on_press:
       then:
@@ -117,6 +119,7 @@ i2c:
   sda: GPIO18
   scl: GPIO23
   scan: true
+  frequency: 10kHz
   
 i2s_audio:
   i2s_lrclk_pin: GPIO33

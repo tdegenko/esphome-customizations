@@ -13,7 +13,15 @@ const uint8_t register_value = 0x00 ^ (0b011 << 2);
 static const char *TAG = "ES72432.component";
 
 void ES72432::setup() {
+    ESP_LOGCONFIG(TAG, "Empty component");
+    ESP_LOGD(TAG, "Setting up bits/sample");
     this->write_register(REGISTER_ADDRESS, &register_value, 1);
+    ESP_LOGD(TAG, "Bits/sample Configured");
+    uint8_t data[2];
+    this->read_register(REGISTER_ADDRESS, data, 1);
+    char out[20];
+    snprintf(out,20 ,"%x%x", data[0],data[1]);
+    ESP_LOGD(TAG, out);
 }
 
 void ES72432::loop() {
@@ -21,7 +29,7 @@ void ES72432::loop() {
 }
 
 void ES72432::dump_config(){
-    ESP_LOGCONFIG(TAG, "Empty component");
+    ESP_LOGCONFIG(TAG, "ES72432");
 }
 
 
