@@ -17,14 +17,14 @@ void ES72432::setup() {
     ESP_LOGD(TAG, "Setting up bits/sample");
     this->write_register(REGISTER_ADDRESS, &register_value, 1);
     ESP_LOGD(TAG, "Bits/sample Configured");
+}
+
+void ES72432::loop() {
     uint8_t data[2];
     this->read_register(REGISTER_ADDRESS, data, 1);
     char out[20];
     snprintf(out,20 ,"%x%x", data[0],data[1]);
     ESP_LOGD(TAG, out);
-}
-
-void ES72432::loop() {
 
 }
 
