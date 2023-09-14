@@ -15,6 +15,9 @@ static const char *TAG = "ES72432.component";
 void ES72432::setup() {
     ESP_LOGCONFIG(TAG, "Empty component");
     ESP_LOGD(TAG, "Setting up bits/sample");
+    const uint8_t mode_val = 0x01;
+    // set to "Software Mode" whatever that does?
+    this->write_register(0x00, &mode_val, 1);
     this->write_register(REGISTER_ADDRESS, &register_value, 1);
     const uint8_t gain_val = 0x43;
     this->write_register(0x08, &gain_val, 1);
