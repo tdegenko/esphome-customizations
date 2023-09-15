@@ -18,6 +18,9 @@ void ES72432::setup() {
     const uint8_t mode_val = 0x01;
     // set to "Software Mode" whatever that does?
     this->write_register(0x00, &mode_val, 1);
+    // Make sure things are enabled.
+    const uint8_t reg_6 = 0x00;
+    this->write_register(0x06, &reg_6, 1);
     this->write_register(REGISTER_ADDRESS, &register_value, 1);
     const uint8_t gain_val = 0x43;
     this->write_register(0x08, &gain_val, 1);
