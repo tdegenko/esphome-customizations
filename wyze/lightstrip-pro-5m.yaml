@@ -130,7 +130,7 @@ microphone:
   - platform: i2s_audio
     id: internal_mic
     pdm: false
-    bits_per_sample: 16bit
+    bits_per_sample: 32bit
     adc_type: external
     i2s_din_pin: GPIO36
     channel: right

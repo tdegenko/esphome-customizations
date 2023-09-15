@@ -6,7 +6,7 @@ namespace ES72432 {
 
 const uint8_t I2C_ADDRESS = 0x13;
 const uint8_t REGISTER_ADDRESS = 0x01;
-const uint8_t register_value = 0x00 ^ (0b011 << 2);
+const uint8_t register_value = 0x00 ^ (0b101 << 2);
 
 
 
