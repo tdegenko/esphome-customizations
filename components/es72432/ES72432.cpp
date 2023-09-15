@@ -22,7 +22,7 @@ void ES72432::setup() {
     const uint8_t reg_6 = 0x00;
     this->write_register(0x06, &reg_6, 1);
     this->write_register(REGISTER_ADDRESS, &register_value, 1);
-    const uint8_t gain_val = 0x23;
+    const uint8_t gain_val = 0x43;
     this->write_register(0x08, &gain_val, 1);
     ESP_LOGD(TAG, "Bits/sample Configured");
 }
