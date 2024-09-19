@@ -123,6 +123,8 @@ sensor:
         - calibrate_linear:
             - 0.0 -> 0.0
             - 134 -> 58
+    energy:
+      name: "${friendly_name} Energy"
 
 binary_sensor:
   - platform: gpio
