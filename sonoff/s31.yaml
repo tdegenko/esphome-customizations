@@ -11,7 +11,7 @@ esphome:
     version: "1.00"
 
 esp8266:
-  board: esp01_1m
+  board: esp12e
 
 dashboard_import:
   package_import_url: github://tdegenko/esphome-customizations/sonoff/s31.yaml
@@ -60,13 +60,19 @@ sensor:
     current:
       name: "${friendly_name} Current"
       accuracy_decimals: 1
+      filters:
+        - throttle_average: 60s
     voltage:
       name: "${friendly_name} Voltage"
       accuracy_decimals: 1
+      filters:
+        - throttle_average: 60s
     power:
       name: "${friendly_name} Power"
       accuracy_decimals: 1
       id: my_power
+      filters:
+        - throttle_average: 60s
   - platform: total_daily_energy
     name: "${friendly_name} Daily Energy"
     power_id: my_power
