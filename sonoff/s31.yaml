@@ -1,0 +1,92 @@
+substitutions:
+  friendly_name: "Sonoff S31"
+  name: "sonoff-s31"
+
+esphome:
+  name: "${name}"
+  friendly_name: "${friendly_name}"
+  name_add_mac_suffix: true
+  project:
+    name: tdegenko.esphome-sonoff-s31 
+    version: "1.00"
+
+esp8266:
+  board: esp01_1m
+
+dashboard_import:
+  package_import_url: github://tdegenko/esphome-customizations/sonoff/s31.yaml
+  import_full_config: false # or true
+
+wifi:
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Fallback Hotspot"
+    password: "aiOc8OoF0Cyq"
+
+captive_portal:
+
+logger:
+  baud_rate: 0 # (UART logging interferes with cse7766)
+  
+# Remove this line if you're not using Home Assistsant or your switch will restart every now and again
+api:
+
+ota:
+  platform: esphome
+
+# Device Specific Config
+
+uart:
+  rx_pin: RX
+  baud_rate: 4800
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO0
+      mode: INPUT_PULLUP
+      inverted: True
+    name: "${friendly_name} Button"
+    on_press:
+      - switch.toggle: relay
+  - platform: status
+    name: "${friendly_name} Status"
+
+sensor:
+  - platform: wifi_signal
+    name: "${friendly_name} WiFi Signal"
+    update_interval: 60s
+  - platform: cse7766
+    current:
+      name: "${friendly_name} Current"
+      accuracy_decimals: 1
+    voltage:
+      name: "${friendly_name} Voltage"
+      accuracy_decimals: 1
+    power:
+      name: "${friendly_name} Power"
+      accuracy_decimals: 1
+      id: my_power
+  - platform: total_daily_energy
+    name: "${friendly_name} Daily Energy"
+    power_id: my_power
+
+switch:
+  - platform: gpio
+    name: "${friendly_name} Relay"
+    pin: GPIO12
+    id: relay
+    restore_mode: ALWAYS_OFF
+  - platform: restart
+    name: "${friendly_name} Restart"
+
+
+time:
+  - platform: sntp
+    servers: lenin.mithri.date
+    id: my_time
+
+status_led:
+  pin:
+    number: GPIO13
+    inverted: True
