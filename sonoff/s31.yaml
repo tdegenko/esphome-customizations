@@ -73,6 +73,20 @@ sensor:
       id: my_power
       filters:
         - throttle_average: 60s
+    energy:
+      name: "${friendly_name} Energy"
+      accuracy_decimals: 2
+      filters:
+        - throttle: 60s
+    apparent_power: #(only available with version 2024.3.0 or greater)
+      name: "${friendly_name} Apparent Power"
+      filters:
+        - throttle_average: 60s
+    power_factor: #(only available with version 2024.3.0 or greater)
+      name: "${friendly_name} Power Factor"
+      accuracy_decimals: 2
+      filters:
+        - throttle_average: 60s
   - platform: total_daily_energy
     name: "${friendly_name} Daily Energy"
     power_id: my_power
