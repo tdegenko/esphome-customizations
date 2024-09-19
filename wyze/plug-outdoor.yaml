@@ -1,5 +1,4 @@
 substitutions:
-  friendly_name: "Plug Outdoor"
   name: "wyzeplugoutdoor"
   # Higher value gives lower watt readout
   current_res: "0.001"
