@@ -43,7 +43,7 @@ captive_portal:
 # Device Specific Config
 switch:
   - platform: gpio
-    name: "${friendly_name} Relay 1"
+    name: "Plug 1"
     pin:
       number: GPIO15
       inverted: false
@@ -53,7 +53,7 @@ switch:
     on_turn_off:
       - light.turn_off: relay1_led
   - platform: gpio
-    name: "${friendly_name} Relay 2"
+    name: "Plug 2"
     pin:
       number: GPIO32
       inverted: false
@@ -63,7 +63,7 @@ switch:
     on_turn_off:
       - light.turn_off: relay2_led
   - platform: restart
-    name: "${friendly_name} Restart"
+    name: "Restart"
 
 output:
   - platform: gpio
@@ -89,11 +89,11 @@ light:
 
 sensor:
   - platform: wifi_signal
-    name: "${friendly_name} WiFi Signal"
+    name: "WiFi Signal"
     update_interval: 60s
   - platform: adc
     pin: GPIO34
-    name: "${friendly_name} LUX"
+    name: "LUX"
     device_class: illuminance
     unit_of_measurement: lx
     attenuation: 11db
@@ -108,15 +108,15 @@ sensor:
     change_mode_every: 3
     update_interval: 3s
     current:
-      name: "${friendly_name} Amps"
+      name: "Amps"
       unit_of_measurement: A
       accuracy_decimals: 2
     voltage:
-      name: "${friendly_name} Volts"
+      name: "Volts"
       unit_of_measurement: V
       accuracy_decimals: 1
     power:
-      name: "${friendly_name} Watts"
+      name: "Watts"
       unit_of_measurement: W
       accuracy_decimals: 0
       filters:
@@ -124,7 +124,7 @@ sensor:
             - 0.0 -> 0.0
             - 134 -> 58
     energy:
-      name: "${friendly_name} Energy"
+      name: "Energy"
 
 binary_sensor:
   - platform: gpio
