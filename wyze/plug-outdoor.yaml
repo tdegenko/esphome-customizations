@@ -43,7 +43,7 @@ captive_portal:
 # Device Specific Config
 switch:
   - platform: gpio
-    name: "${friendly_name} Relay1"
+    name: "${friendly_name} Relay 1"
     pin:
       number: GPIO15
       inverted: false
@@ -53,7 +53,7 @@ switch:
     on_turn_off:
       - light.turn_off: relay1_led
   - platform: gpio
-    name: "${friendly_name} Relay2"
+    name: "${friendly_name} Relay 2"
     pin:
       number: GPIO32
       inverted: false
@@ -77,12 +77,12 @@ output:
 
 light:
   - platform: binary
-    name: "Relay1 LED"
+    name: "Relay 1 LED"
     id: relay1_led
     internal: true
     output: relay1_led_gpio
   - platform: binary
-    name: "Relay2 LED"
+    name: "Relay 2 LED"
     id: relay2_led
     internal: true
     output: relay2_led_gpio
