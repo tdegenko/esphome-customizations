@@ -12,7 +12,7 @@ esphome:
   name_add_mac_suffix: true
   project:
     name: tdegenko.esphome-wyzeplugoutdoor
-    version: "1.00"
+    version: "1.01"
 
 esp32:
   board: esp32dev
@@ -117,6 +117,7 @@ sensor:
       accuracy_decimals: 1
     power:
       name: "Watts"
+      id: my_power
       unit_of_measurement: W
       accuracy_decimals: 0
       filters:
@@ -125,6 +126,17 @@ sensor:
             - 134 -> 58
     energy:
       name: "Energy"
+  - platform: total_daily_energy
+    name: "Daily Energy"
+    power_id: my_power
+
+  - platform: total_daily_energy
+    name: "Daily Energy"
+    power_id: my_power
+
+time:
+  - platform: homeassistant
+    id: homeassistant_time
 
 binary_sensor:
   - platform: gpio

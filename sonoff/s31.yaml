@@ -8,7 +8,7 @@ esphome:
   name_add_mac_suffix: true
   project:
     name: tdegenko.esphome-sonoff-s31 
-    version: "1.00"
+    version: "1.02"
 
 esp8266:
   board: esp12e
@@ -102,9 +102,8 @@ switch:
 
 
 time:
-  - platform: sntp
-    servers: lenin.mithri.date
-    id: my_time
+  - platform: homeassistant
+    id: homeassistant_time
 
 status_led:
   pin:
