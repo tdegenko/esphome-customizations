@@ -1,0 +1,105 @@
+---
+substitutions:
+  friendly_name: 'Westinghouse SK522-W'
+  name: 'westinghouse-sk522-w'
+esphome:
+  name: '${name}'
+  friendly_name: '${friendly_name}'
+  name_add_mac_suffix: true
+  project:
+    name: 'tdegenko.esphome-westinghouse-sk522-w'
+    version: '1.00'
+bk72xx:
+  board: 'wb2s'
+# Enable logging
+logger:
+dashboard_import:
+  package_import_url: 'github://tdegenko/esphome-customizations/westinghouse/sk522-w.yaml'
+  import_full_config: false
+wifi:
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: 'Fallback Hotspot'
+    password: 'aiOc8OoF0Cyq'
+captive_portal:
+api:
+ota:
+  - platform: 'esphome'
+sensor:
+  - platform: 'wifi_signal'
+    name: 'WiFi Signal'
+    update_interval: '60s'
+switch:
+  - platform: 'gpio'
+    name: 'Plug 1'
+    pin:
+      number: 'P26'
+      inverted: false
+    id: 'relay1'
+    on_turn_on:
+      - light.turn_on: 'relay1_led'
+    on_turn_off:
+      - light.turn_off: 'relay1_led'
+  - platform: 'gpio'
+    name: 'Plug 2'
+    pin:
+      number: 'P24'
+      inverted: false
+    id: 'relay2'
+    on_turn_on:
+      - light.turn_on: 'relay2_led'
+    on_turn_off:
+      - light.turn_off: 'relay2_led'
+  - platform: 'restart'
+    name: 'Restart'
+output:
+  - platform: 'gpio'
+    pin: 'P6'
+    inverted: true
+    id: 'relay1_led_gpio'
+  - platform: 'gpio'
+    pin: 'P10'
+    inverted: true
+    id: 'relay2_led_gpio'
+light:
+  - platform: 'binary'
+    name: 'Relay 1 LED'
+    id: 'relay1_led'
+    internal: true
+    output: 'relay1_led_gpio'
+  - platform: 'binary'
+    name: 'Relay 2 LED'
+    id: 'relay2_led'
+    internal: true
+    output: 'relay2_led_gpio'
+binary_sensor:
+  - platform: 'gpio'
+    internal: true
+    pin:
+      number: 'P8'
+      mode:
+        input: true
+        pullup: true
+      inverted: true
+    name: 'Relay 1 Button'
+    filters:
+      - delayed_on: '20ms'
+    on_press:
+      - switch.toggle: 'relay1'
+  - platform: 'gpio'
+    internal: true
+    pin:
+      number: 'P7'
+      mode:
+        input: true
+        pullup: true
+      inverted: true
+    name: 'Relay 2 Button'
+    filters:
+      - delayed_on: '20ms'
+    on_press:
+      - switch.toggle: 'relay2'
+status_led:
+  pin:
+    number: 'P11'
+    inverted: true
