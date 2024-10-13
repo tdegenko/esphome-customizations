@@ -1,0 +1,177 @@
+---
+substitutions:
+  friendly_name: "Blisslight Skylight"
+  name: "blisslight-skylight"
+  no_laser: "true"
+  pwm_freq: 200Hz
+
+esphome:
+  name: "${name}"
+  friendly_name: "${friendly_name}"
+  name_add_mac_suffix: true
+  project:
+    name: tdegenko.esphome-blisslight-skylight
+    version: "1.00"
+
+bk72xx:
+  board: cbu
+
+dashboard_import:
+  package_import_url: github://tdegenko/esphome-customizations/blisslight/skylight.yaml
+  import_full_config: false  # or true
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+  - platform: esphome
+
+wifi:
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Sky-Light-Evolve"
+    password: "vzVUyQpQhfPO"
+
+captive_portal:
+
+binary_sensor:
+  - platform: gpio
+    internal: true
+    pin:
+      number: P14
+      mode: INPUT_PULLUP
+      inverted: true
+    name: Button
+    on_click:
+      - then:
+          - switch.turn_on: switch_main
+    on_double_click:
+      then:
+        - light.toggle: stars
+    on_multi_click:
+      timing:
+        - on for at least 1s
+      then:
+        - switch.turn_off: switch_main
+
+sensor:
+  - platform: uptime
+    name: "Uptime"
+    unit_of_measurement: minutes
+    filters:
+      - lambda: return x / 60.0;
+
+  - platform: wifi_signal
+    name: "WiFi Signal"
+    update_interval: 60s
+
+output:
+  - platform: libretiny_pwm
+    pin: PWM1
+    inverted: false
+    id: motor_pwm
+    frequency: "${pwm_freq}"
+    min_power: 0.40
+    zero_means_zero: true
+
+  - platform: libretiny_pwm
+    pin: PWM2
+    inverted: false
+    id: stars_pwm
+    frequency: "${pwm_freq}"
+    max_power: 0.35
+
+  - platform: libretiny_pwm
+    pin: PWM0
+    inverted: false
+    id: red_pwm
+    frequency: "${pwm_freq}"
+
+  - platform: libretiny_pwm
+    pin: PWM3
+    inverted: false
+    id: white_pwm
+    frequency: "${pwm_freq}"
+
+  - platform: libretiny_pwm
+    pin: PWM4
+    inverted: false
+    id: blue_pwm
+    frequency: "${pwm_freq}"
+
+  - platform: libretiny_pwm
+    pin: PWM5
+    inverted: false
+    id: cyan_pwm
+    frequency: "${pwm_freq}"
+
+light:
+  - platform: monochromatic
+    name: "Stars"
+    output: stars_pwm
+    icon: mdi:creation
+    id: stars
+    restore_mode: ALWAYS_OFF
+    internal: "${no_laser}"
+  - platform: rgbw
+    name: "Nebula"
+    red: red_pwm
+    green: cyan_pwm
+    blue: blue_pwm
+    white: white_pwm
+    icon: mdi:aurora
+    id: nebula
+    restore_mode: ALWAYS_OFF
+
+fan:
+  - platform: speed
+    output: motor_pwm
+    name: "Motion"
+    icon: mdi:axis-z-rotate-clockwise
+    id: motion
+    on_turn_on:
+      then:
+        - lambda: !lambda |-
+            auto speed = id(motion).speed;
+            auto call = id(motion).turn_on();
+            call.set_speed(100);
+            call.perform();
+            esphome::delay(150);
+            auto call2 = id(motion).make_call();
+            call2.set_speed(speed);
+            call2.perform();
+    restore_mode: ALWAYS_OFF
+
+status_led:
+  pin:
+    number: P15
+    inverted: false
+switch:
+  - platform: restart
+    name: "Restart"
+
+  - platform: template
+    name: None
+    id: switch_main
+    lambda: "return (id(motion).state || id(stars).current_values.is_on() || id(nebula).current_values.is_on());"
+
+    # Turn on using the white scene
+    turn_on_action:
+      - light.turn_on:
+          id: nebula
+          brightness: !lambda |-
+           return max(id(nebula).current_values.get_brightness(), 0.50);
+      - fan.turn_on: motion
+
+    # Completely turn off the laser, light, motor and button LED
+    turn_off_action:
+      - fan.turn_off: motion
+      - light.turn_off: stars
+      - light.turn_off: nebula
+
+time:
+  - platform: homeassistant
+    id: homeassistant_time
