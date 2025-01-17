@@ -1,6 +1,7 @@
 substitutions:
   friendly_name: "Sonoff S31"
   name: "sonoff-s31"
+  restore_mode: ALWAYS_OFF
 
 esphome:
   name: "${name}"
@@ -96,7 +97,7 @@ switch:
     name: "None"
     pin: GPIO12
     id: relay
-    restore_mode: ALWAYS_OFF
+    restore_mode: "${restore_mode}"
   - platform: restart
     name: "Restart"
 
