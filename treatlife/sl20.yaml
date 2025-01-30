@@ -1,0 +1,68 @@
+---
+substitutions:
+  friendly_name: "Treatlife SL10"
+  name: "treatlife-sl20"
+  restore_mode: ALWAYS_ON
+  pwm_freq: 1000Hz
+
+esphome:
+  name: "${name}"
+  friendly_name: "${friendly_name}"
+  name_add_mac_suffix: true
+  project:
+    name: tdegenko.esphome-tratlife-sl20
+    version: "1.01"
+
+bk72xx:
+  board: generic-bk7231t-qfn32-tuya
+
+dashboard_import:
+  package_import_url: github://tdegenko/esphome-customizations/treatlife/sl20.yaml
+  import_full_config: false     # or true
+
+wifi:
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Fallback Hotspot"
+    password: "aiOc8OoF0Cyq"
+
+captive_portal:
+
+logger:
+
+api:
+
+ota:
+  platform: esphome
+
+output:
+  - platform: libretiny_pwm
+    pin: PWM2
+    inverted: false
+    id: cw_pwm
+    frequency: "${pwm_freq}"
+
+  - platform: libretiny_pwm
+    pin: PWM3
+    inverted: false
+    id: ww_pwm
+    frequency: "${pwm_freq}"
+light:
+  - platform: cwww
+    name: None
+    id: cwww_led
+    cold_white: cw_pwm
+    warm_white: ww_pwm
+    cold_white_color_temperature: 6500 K
+    warm_white_color_temperature: 2500 K
+    constant_brightness: true
+    restore_mode: "${restore_mode}"
+
+sensor:
+  - platform: wifi_signal
+    name: "WiFi Signal"
+    update_interval: 60s
+
+switch:
+  - platform: restart
+    name: "Restart"
