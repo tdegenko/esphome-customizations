@@ -3,6 +3,7 @@ substitutions:
   friendly_name: "Treatlife SL20"
   name: "treatlife-sl20"
   restore_mode: ALWAYS_ON
+  light_transition_length: 1s
   pwm_freq: 1000Hz
 
 esphome:
@@ -11,7 +12,7 @@ esphome:
   name_add_mac_suffix: true
   project:
     name: tdegenko.esphome-treatlife-sl20
-    version: "1.02"
+    version: "1.03"
 
 bk72xx:
   board: generic-bk7231t-qfn32-tuya
@@ -57,6 +58,7 @@ light:
     warm_white_color_temperature: 2500 K
     constant_brightness: true
     restore_mode: "${restore_mode}"
+    default_transition_length: "${light_transition_length}"
 
 sensor:
   - platform: wifi_signal
