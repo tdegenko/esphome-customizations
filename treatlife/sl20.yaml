@@ -10,7 +10,7 @@ esphome:
   friendly_name: "${friendly_name}"
   name_add_mac_suffix: true
   project:
-    name: tdegenko.esphome-tratlife-sl20
+    name: tdegenko.esphome-treatlife-sl20
     version: "1.02"
 
 bk72xx:
