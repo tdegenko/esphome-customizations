@@ -1,0 +1,84 @@
+---
+substitutions:
+  name: helloify-hthc-a19-rgb
+  friendly_name: Helloify HTHC-A19-RGB
+  restore_mode: ALWAYS_ON
+  light_transition_length: 1s
+
+esphome:
+  name: "${name}"
+  friendly_name: "${friendly_name}"
+  name_add_mac_suffix: true
+  project:
+    name: tdegenko.esphome-helloify-hthc-a19-rgb
+    version: "1.00"
+
+bk72xx:
+  board: wb3l
+
+dashboard_import:
+  package_import_url: github://tdegenko/esphome-customizations/helloify/hthc-a19-rgb.yaml
+  import_full_config: false     # or true
+
+wifi:
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Fallback Hotspot"
+    password: "aiOc8OoF0Cyq"
+
+captive_portal:
+
+logger:
+
+api:
+
+ota:
+  platform: esphome
+
+sm2135:
+  clock_pin: P7
+  data_pin: P6
+  rgb_current: 20mA
+  cw_current: 60mA
+
+output:
+  - platform: sm2135
+    id: output_red
+    channel: 2
+  - platform: sm2135
+    id: output_green
+    channel: 1
+  - platform: sm2135
+    id: output_blue
+    channel: 0
+  - platform: sm2135
+    id: output_cold
+    channel: 4
+  - platform: sm2135
+    id: output_warm
+    channel: 3
+
+light:
+  - platform: rgbww
+    id: rgbww_led
+    name: Light
+    color_interlock: true
+    constant_brightness: true
+    cold_white_color_temperature: 6500 K
+    warm_white_color_temperature: 2700 K
+    red: output_red
+    green: output_green
+    blue: output_blue
+    cold_white: output_cold
+    warm_white: output_warm
+    restore_mode: "${restore_mode}"
+    default_transition_length: "${light_transition_length}"
+
+sensor:
+  - platform: wifi_signal
+    name: "WiFi Signal"
+    update_interval: 60s
+
+switch:
+  - platform: restart
+    name: "Restart"
